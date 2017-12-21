@@ -1,0 +1,37 @@
+{
+  "name": "functional-calculator",
+  "version": "1.0.0",
+  "description": "A calculator written in the elm programming language",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --hot --inline",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artfuldev/functional-calculator.git"
+  },
+  "author": "Sudarsan Balaji <Sudarsan.Balaji@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/artfuldev/functional-calculator/issues"
+  },
+  "homepage": "https://github.com/artfuldev/functional-calculator#readme",
+  "devDependencies": {
+    "autoprefixer": "^7.2.3",
+    "css-loader": "^0.28.7",
+    "elm": "^0.18.0",
+    "elm-webpack-loader": "^4.4.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.7.2",
+    "postcss-loader": "^2.0.9",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "webpack-merge": "^4.1.1"
+  }
+}
