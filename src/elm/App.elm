@@ -11,10 +11,6 @@ main =
 type Operator
   = Addition
 
-type Either a b
-  = Left a
-  | Right b
-
 type alias Number
   = Float
 
