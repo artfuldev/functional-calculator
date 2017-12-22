@@ -33,18 +33,18 @@ model =
 
 type Msg
   = Reset
-  | SetLeft String
-  | SetOperator String
-  | SetRight String
+  | SetLeft (Maybe Number)
+  | SetOperator (Maybe Operator)
+  | SetRight (Maybe Number)
   | Operate
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
     Reset -> { model | left = Nothing, operator = Nothing, right = Nothing, result = Nothing }
-    SetLeft maybeNumber -> { model | left = parseNumber maybeNumber }
-    SetOperator maybeOperator -> { model | operator = parseOperator maybeOperator }
-    SetRight maybeNumber -> { model | right = parseNumber maybeNumber }
+    SetLeft number -> { model | left = number }
+    SetOperator operator -> { model | operator = operator }
+    SetRight number -> { model | right = number }
     Operate -> { model | result = operate model.operator model.left model.right }
 
 parseNumber : String -> Maybe Number
@@ -79,9 +79,9 @@ view : Model -> Html Msg
 view model =
   div []
     [ text "Hello World!"
-    , input [ placeholder "Left", type_ "number", onInput SetLeft ] []
-    , input [ placeholder "+", onInput SetOperator ] []
-    , input [ placeholder "Right", type_ "number", onInput SetRight ] []
+    , input [ placeholder "Left", type_ "number", onInput <| SetLeft << parseNumber ] []
+    , input [ placeholder "+", onInput <| SetOperator << parseOperator ] []
+    , input [ placeholder "Right", type_ "number", onInput <| SetRight << parseNumber ] []
     , button [ onClick Operate ] [ text "Operate" ]
     , text " = "
     , text <| toResultString model.result
