@@ -69,11 +69,18 @@ operate operator left right =
         Nothing -> Nothing
     _ -> Nothing
 
-toResultString: Maybe Number -> String
+toResultString: Maybe Number -> Maybe String
 toResultString result =
   case result of
-    Just number -> toString number
+    Just number -> Just <| toString number
+    Nothing -> Nothing
+
+prepend: String -> Maybe String -> String
+prepend prefix input =
+  case input of
+    Just value -> prefix ++ value
     Nothing -> ""
+
 
 view : Model -> Html Msg
 view model =
@@ -83,6 +90,5 @@ view model =
     , input [ placeholder "+", onInput <| SetOperator << parseOperator ] []
     , input [ placeholder "Right", type_ "number", onInput <| SetRight << parseNumber ] []
     , button [ onClick Operate ] [ text "Operate" ]
-    , text " = "
-    , text <| toResultString model.result
+    , text <| prepend "=" <| toResultString model.result
     ]
