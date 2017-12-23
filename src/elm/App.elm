@@ -3,6 +3,7 @@ module App exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Parser
 
 main : Program Never Model Msg
 main =
@@ -49,8 +50,8 @@ update msg model =
 
 parseNumber : String -> Maybe Number
 parseNumber value =
-  case String.toFloat value of
-    Ok number -> Just number
+  case Parser.parseNumber <| Just value of
+    Ok (number, remaining) -> Just number
     Err _ -> Nothing
 
 parseOperator: String -> Maybe Operator
