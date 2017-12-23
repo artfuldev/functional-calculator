@@ -1,13 +1,10 @@
 module Parser exposing (parseNumber)
 
-type alias Parser a =
-  Maybe String -> Result ParserErrorMessage (a, Maybe String)
-
 type ParserErrorMessage
   = NothingToParse
   | CharacterMismatch
 
-parseDigit: Parser Float
+parseDigit: Maybe String -> Result ParserErrorMessage (Float, Maybe String)
 parseDigit input =
   case input of
     Just value ->
@@ -33,7 +30,7 @@ parseDigits char previous =
         Err NothingToParse -> Ok value
         Ok (digit, remaining) -> Ok <| value * 10 + digit
 
-parseNumber: Parser Float
+parseNumber: Maybe String -> Result ParserErrorMessage (Float, Maybe String)
 parseNumber input =
   case input of
     Just value ->
