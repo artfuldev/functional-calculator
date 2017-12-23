@@ -17,7 +17,7 @@ parseDigit input =
           case String.toFloat value of
             Ok number -> Ok (number, Nothing)
             Err _ -> Err CharacterMismatch
-        _ ->
+        length ->
           case String.toFloat <| String.dropRight (length - 1) value of
             Ok number -> Ok (number, Just <| String.dropLeft 1 value)
             Err _ -> Err CharacterMismatch
@@ -40,7 +40,7 @@ parseNumber input =
       case String.length value of
         0 -> Err NothingToParse
         1 -> parseDigit <| Just value
-        length ->
+        _ ->
           case String.foldl parseDigits (Ok 0) value of
             Err msg -> Err msg
             Ok result -> Ok (result, Nothing)
