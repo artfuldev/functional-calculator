@@ -17,7 +17,7 @@ parseDigit input =
           case String.toFloat value of
             Ok number -> Ok (number, Nothing)
             Err _ -> Err CharacterMismatch
-        length ->
+        _ ->
           case String.toFloat <| String.dropRight (length - 1) value of
             Ok number -> Ok (number, Just <| String.dropLeft 1 value)
             Err _ -> Err CharacterMismatch
