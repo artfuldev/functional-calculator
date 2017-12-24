@@ -3,93 +3,48 @@ module App exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Parser
+
+import Calculation exposing (parse, perform)
 
 main : Program Never Model Msg
 main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
-type Operator
-  = Addition
-
-type alias Number
-  = Float
-
-type alias Calculation =
-  { left: Maybe Number
-  , operator: Maybe Operator
-  , right: Maybe Number
-  , result: Maybe Number
+type alias Model =
+  { expression: String
+  , result: Maybe Float
   }
-
-type alias Model = Calculation
 
 model : Model
 model =
-  { left = Nothing
-  , operator = Nothing
-  , right = Nothing
+  { expression = ""
   , result = Nothing
   }
 
 type Msg
-  = Reset
-  | SetLeft (Maybe Number)
-  | SetOperator (Maybe Operator)
-  | SetRight (Maybe Number)
-  | Operate
+  = ExpressionInputChanged String
+
+result : String -> Maybe Float
+result value =
+  case parse value of
+    Just calculation -> Just <| perform calculation
+    Nothing -> Nothing
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    Reset -> { model | left = Nothing, operator = Nothing, right = Nothing, result = Nothing }
-    SetLeft number -> { model | left = number }
-    SetOperator operator -> { model | operator = operator }
-    SetRight number -> { model | right = number }
-    Operate -> { model | result = operate model.operator model.left model.right }
+    ExpressionInputChanged value -> { model | expression = value, result = result value }
 
-parseNumber : String -> Maybe Number
-parseNumber value =
-  case Parser.parseNumber <| Just value of
-    Ok (number, remaining) -> Just number
-    Err _ -> Nothing
-
-parseOperator: String -> Maybe Operator
-parseOperator value =
-  Just Addition
-
-operate : Maybe Operator -> Maybe Number -> Maybe Number -> Maybe Number
-operate operator left right =
-  case operator of
-    Just Addition ->
-      case left of
-        Just x ->
-          case right of
-            Just y -> Just <| x + y
-            Nothing -> Nothing
-        Nothing -> Nothing
-    _ -> Nothing
-
-toResultString: Maybe Number -> Maybe String
-toResultString result =
-  case result of
-    Just number -> Just <| toString number
-    Nothing -> Nothing
-
-prepend: String -> Maybe String -> String
-prepend prefix input =
-  case input of
-    Just value -> prefix ++ value
+toResultString : Maybe Float -> String
+toResultString value =
+  case value of
+    Just x -> toString x
     Nothing -> ""
-
+    
 
 view : Model -> Html Msg
 view model =
   div []
-    [ text "Hello World!"
-    , input [ placeholder "Left", type_ "number", onInput <| SetLeft << parseNumber ] []
-    , input [ placeholder "+", onInput <| SetOperator << parseOperator ] []
-    , input [ placeholder "Right", type_ "number", onInput <| SetRight << parseNumber ] []
-    , button [ onClick Operate ] [ text "Operate" ]
-    , text <| prepend "=" <| toResultString model.result
+    [ input [ placeholder "0", onInput ExpressionInputChanged ] []
+    , p [] [ text <| toResultString model.result ]
     ]
