@@ -1,3 +1,3 @@
 var Elm = require('./elm/App');
-
-Elm.App.embed(document.getElementById('app'));
+Elm.App.fullscreen();
+require('./styles/styles.scss');

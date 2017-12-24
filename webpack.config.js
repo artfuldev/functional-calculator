@@ -34,7 +34,7 @@ var commonConfig = {
         noParse: /\.elm$/,
         rules: [{
             test: /\.(eot|ttf|woff|woff2|svg)$/,
-            use: 'file-loader?publicPath=../../&name=static/css/[hash].[ext]'
+            use: 'file-loader?publicPath=../../&name=styles/[hash].[ext]'
         }]
     },
     plugins: [
@@ -103,7 +103,7 @@ if (isProd === true) {
         },
         plugins: [
             new ExtractTextPlugin({
-                filename: 'static/css/[name]-[hash].css',
+                filename: 'styles/[name]-[hash].css',
                 allChunks: true,
             }),
 

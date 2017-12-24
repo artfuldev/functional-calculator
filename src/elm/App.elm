@@ -44,7 +44,10 @@ toResultString value =
 
 view : Model -> Html Msg
 view model =
-  div []
-    [ input [ placeholder "0", onInput ExpressionInputChanged ] []
-    , p [] [ text <| toResultString model.result ]
+  div [ id "app" ]
+    [ header []
+      [ input [ placeholder "0", onInput ExpressionInputChanged ] []
+      , p [] [ text <| toResultString model.result ]
+      ]
+    , main_ [] []  
     ]
