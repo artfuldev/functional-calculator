@@ -9,5 +9,6 @@
     "elm-stuff": true,
     "dist": true
   },
-  "elm.makeCommand": "./node_modules/.bin/elm-make"
+  "elm.makeCommand": "./node_modules/.bin/elm-make",
+  "elm.formatCommand": "./node_modules/.bin/elm-format"
 }
