@@ -41,11 +41,6 @@ fixPrecision precision value =
   toFloat (round (value * toFloat (10 ^ precision))) / toFloat (10 ^ precision)
 
 multiply: Float -> Float -> Float
-multiply x y = 
-  let
-    fix =
-      [x, y]
-        |> List.map precision
-        |> List.sum
-        |> fixPrecision
-  in fix <| x * y
+multiply x y =
+  x * y
+  |> fixPrecision (precision x + precision y)
