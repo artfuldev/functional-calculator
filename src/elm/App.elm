@@ -61,8 +61,8 @@ updateResult model =
   { model | result = result model.expression }
 
 result : String -> Maybe Float
-result value =
-  case run parser value of
+result expression =
+  case run parser expression of
     Ok calculation -> Just <| perform calculation
     Err _ -> Nothing
 
@@ -72,9 +72,9 @@ update msg model =
     KeyPressed key -> model |> updateExpression key |> updateResult
 
 toResultString : Maybe Float -> String
-toResultString value =
-  case value of
-    Just x -> toString x
+toResultString result =
+  case result of
+    Just float -> toString float
     Nothing -> ""
 
 view : Model -> Html Msg
