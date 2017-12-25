@@ -13,7 +13,7 @@ operate operation x y =
   case operation of
     Addition -> x + y
     Subtraction -> x - y
-    Multiplication -> x * y
+    Multiplication -> multiply x y
     Division -> x / y
 
 parser: Parser Operation
@@ -25,3 +25,27 @@ parser =
       , symbol "*" |> map (always Multiplication)
       , symbol "/" |> map (always Division)
       ]
+
+precision: Float -> Int
+precision float =
+  toString float
+    |> String.split "."
+    |> List.tail
+    |> Maybe.withDefault []
+    |> List.head
+    |> Maybe.withDefault ""
+    |> String.length
+
+fixPrecision: Int -> Float -> Float
+fixPrecision precision value =
+  toFloat (round (value * toFloat (10 ^ precision))) / toFloat (10 ^ precision)
+
+multiply: Float -> Float -> Float
+multiply x y = 
+  let
+    fix =
+      [x, y]
+        |> List.map precision
+        |> List.sum
+        |> fixPrecision
+  in fix <| x * y
