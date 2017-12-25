@@ -1,6 +1,6 @@
 module Number exposing (parser)
 
-import Parser exposing (Parser, (|.), (|=), inContext, succeed, fail, float, keep, oneOf, map, symbol, andThen, oneOrMore)
+import Parser exposing (Parser, (|.), (|=), inContext, succeed, float, oneOf, map, symbol, andThen)
 
 -- The implementation is a simplified version adapted from https://github.com/zwilias/elm-json
 parser : Parser Float
