@@ -25,32 +25,40 @@ model =
 type Msg
   = KeyPressed String
 
-removeLastCharacter: String -> String
+removeLastCharacter : String -> String
 removeLastCharacter = String.slice 0 -1
 
-expression: String -> String -> String
-expression previous current =
-  case current of
-    "1" -> previous ++ current
-    "2" -> previous ++ current
-    "3" -> previous ++ current
-    "4" -> previous ++ current
-    "5" -> previous ++ current
-    "6" -> previous ++ current
-    "7" -> previous ++ current
-    "8" -> previous ++ current
-    "9" -> previous ++ current
-    "0" -> previous ++ current
-    "+" -> previous ++ current
-    "-" -> previous ++ current
-    "*" -> previous ++ current
-    "/" -> previous ++ current
-    "." -> previous ++ current
-    "e" -> previous ++ current
-    "E" -> previous ++ current
-    "Backspace" -> removeLastCharacter previous
-    "Delete" -> removeLastCharacter previous
-    _ -> previous
+updateExpression : String -> Model -> Model
+updateExpression key model =
+  let
+    { expression } = model
+    exp =
+      case key of
+        "1" -> expression ++ key
+        "2" -> expression ++ key
+        "3" -> expression ++ key
+        "4" -> expression ++ key
+        "5" -> expression ++ key
+        "6" -> expression ++ key
+        "7" -> expression ++ key
+        "8" -> expression ++ key
+        "9" -> expression ++ key
+        "0" -> expression ++ key
+        "+" -> expression ++ key
+        "-" -> expression ++ key
+        "*" -> expression ++ key
+        "/" -> expression ++ key
+        "." -> expression ++ key
+        "e" -> expression ++ key
+        "E" -> expression ++ key
+        "Backspace" -> removeLastCharacter expression
+        "Delete" -> removeLastCharacter expression
+        _ -> expression
+  in { model | expression = exp }
+
+updateResult : Model -> Model
+updateResult model =
+  { model | result = result model.expression }
 
 result : String -> Maybe Float
 result value =
@@ -61,9 +69,7 @@ result value =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    KeyPressed value ->
-      let expr = expression model.expression value
-      in { model | expression = expr, result = result <| expr }
+    KeyPressed key -> model |> updateExpression key |> updateResult
 
 toResultString : Maybe Float -> String
 toResultString value =
