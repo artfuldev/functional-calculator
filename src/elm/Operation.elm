@@ -1,4 +1,4 @@
-module Operation exposing (..)
+module Operation exposing (Operation, operate, parser)
 
 import Parser exposing (Parser, (|.), (|=), symbol, oneOf, map, inContext)
 
@@ -16,8 +16,8 @@ operate operation x y =
     Multiplication -> x * y
     Division -> x / y
 
-operator: Parser Operation
-operator =
+parser: Parser Operation
+parser =
   inContext "an operator" <|
     oneOf
       [ symbol "+" |> map (always Addition)

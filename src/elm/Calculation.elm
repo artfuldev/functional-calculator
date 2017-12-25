@@ -1,6 +1,6 @@
-module Calculation exposing (parse, perform)
+module Calculation exposing (parser, perform)
 
-import Operation exposing (Operation(..), operate, operator)
+import Operation exposing (Operation, operate)
 import Parser exposing (Parser, (|.), (|=), succeed, float, inContext, end, run)
 
 type alias Calculation =
@@ -13,17 +13,11 @@ perform: Calculation -> Float
 perform { left, operation, right } =
   operate operation left right
 
-calculation: Parser Calculation
-calculation =
+parser: Parser Calculation
+parser =
   inContext "a calculation expression" <|
     succeed Calculation
       |= float
-      |= operator
+      |= Operation.parser
       |= float
       |. end
-
-parse: String -> Maybe Calculation
-parse input =
-  case run calculation input of
-    Ok result -> Just result
-    Err _ -> Nothing

@@ -4,7 +4,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
-import Calculation exposing (parse, perform)
+import Calculation
+import Parser
 
 main : Program Never Model Msg
 main =
@@ -26,9 +27,9 @@ type Msg
 
 result : String -> Maybe Float
 result value =
-  case parse value of
-    Just calculation -> Just <| perform calculation
-    Nothing -> Nothing
+  case Parser.run Calculation.parser value of
+    Ok calculation -> Just <| Calculation.perform calculation
+    Err _ -> Nothing
 
 update : Msg -> Model -> Model
 update msg model =
