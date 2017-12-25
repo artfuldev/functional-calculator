@@ -1,16 +1,8 @@
 module Number exposing (parser)
 
-import Char
-import Parser exposing (Parser, (|.), (|=), inContext, succeed, fail, keep, oneOf, map, symbol, andThen, oneOrMore)
+import Parser exposing (Parser, (|.), (|=), inContext, succeed, fail, float, keep, oneOf, map, symbol, andThen, oneOrMore)
 
-{- The implementation is found in the project elm-json
-  https://github.com/zwilias/elm-json 
-  
-  The exact implementation code is at
-  https://github.com/zwilias/elm-json/blob/dfda64af641f66330c83e88bf8c0cd28492fc0dc/src/Json/Parser.elm
-  as jsonNumber that returns Either Int Float, we are
-  concerned with just Float.
--}
+-- The implementation is a simplified version adapted from https://github.com/zwilias/elm-json
 parser : Parser Float
 parser =
   {- This involves quite a few brittle things:
@@ -24,15 +16,6 @@ parser =
       |= maybeNegative
       |= parseNumber
 
-digitString : Parser String
-digitString =
-  keep oneOrMore Char.isDigit
-
-digits : Parser Float
-digits =
-  digitString
-    |> andThen (String.toInt >> result fail succeed >> map toFloat)
-
 maybeNegative : Parser Sign
 maybeNegative =
   oneOf
@@ -42,39 +25,8 @@ maybeNegative =
 
 parseNumber : Parser Float
 parseNumber =
-    digits
-      |> andThen maybeFractional
+    float
       |> andThen maybeExponentiate
-
-maybeFractional : Float -> Parser Float
-maybeFractional integerPart =
-    inContext "fractional" <|
-      oneOf
-        [ succeed (combine integerPart)
-            |. symbol "."
-            |= digitString
-        , succeed integerPart
-        ]
-
-combine : Float -> String -> Float
-combine integerPart fracPart =
-    integerPart + toFractional fracPart
-
-toFractional : String -> Float
-toFractional floatString =
-  {- We parse "0.1" in 2 parts - a Float `0` and a _String_ `1`. The reason
-    for parsing the fractional as a String is because we need to handle cases
-    like `1.01`. So, to turn the string `"01"` into `0.01`, we turn it into
-    an integer and move if right by dividing by 10 a couple of times.
-  -}
-  floatString
-    |> String.toInt
-    |> Result.withDefault 0
-    |> dividedBy (10 ^ String.length floatString)
-
-dividedBy : Int -> Int -> Float
-dividedBy divisor dividend =
-  toFloat dividend / toFloat divisor
 
 maybeExponentiate : Float -> Parser Float
 maybeExponentiate number =
@@ -100,7 +52,7 @@ exponent =
     succeed applySign
       |. oneOf [ symbol "e", symbol "E" ]
       |= sign
-      |= digits
+      |= float
 
 applyExponent : Float -> Float -> Float
 applyExponent coeff exponent =
@@ -123,9 +75,3 @@ applySign sign number =
   case sign of
     Positive -> number
     Negative -> -number
-
-result : (e -> b) -> (a -> b) -> Result e a -> b
-result onError onSuccess res =
-  case res of
-    Err e -> onError e
-    Ok a -> onSuccess a
