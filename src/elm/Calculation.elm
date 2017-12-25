@@ -1,6 +1,7 @@
 module Calculation exposing (parser, perform)
 
 import Operation exposing (Operation, operate)
+import Number exposing (parser)
 import Parser exposing (Parser, (|.), (|=), succeed, float, inContext, end, run)
 
 type alias Calculation =
@@ -11,13 +12,13 @@ type alias Calculation =
 
 perform: Calculation -> Float
 perform { left, operation, right } =
-  operate operation left right
+  operate operation left right 
 
 parser: Parser Calculation
 parser =
   inContext "a calculation expression" <|
     succeed Calculation
-      |= float
+      |= Number.parser
       |= Operation.parser
-      |= float
+      |= Number.parser
       |. end
