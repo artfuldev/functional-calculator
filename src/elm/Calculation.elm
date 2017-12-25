@@ -1,7 +1,7 @@
 module Calculation exposing (parse, perform)
 
-import Operation exposing (Operation(..), operate)
-import Parser exposing (Parser, (|.), (|=), succeed, float, symbol, oneOf, map, inContext, end, run)
+import Operation exposing (Operation(..), operate, operator)
+import Parser exposing (Parser, (|.), (|=), succeed, float, inContext, end, run)
 
 type alias Calculation =
   { left: Float
@@ -12,16 +12,6 @@ type alias Calculation =
 perform: Calculation -> Float
 perform { left, operation, right } =
   operate operation left right
-
-operator: Parser Operation
-operator =
-  inContext "an operator" <|
-    oneOf
-      [ symbol "+" |> map (always Addition)
-      , symbol "-" |> map (always Subtraction)
-      , symbol "*" |> map (always Multiplication)
-      , symbol "/" |> map (always Division)
-      ]
 
 calculation: Parser Calculation
 calculation =

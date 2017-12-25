@@ -1,5 +1,7 @@
 module Operation exposing (..)
 
+import Parser exposing (Parser, (|.), (|=), symbol, oneOf, map, inContext)
+
 type Operation
   = Addition
   | Subtraction
@@ -13,3 +15,13 @@ operate operation x y =
     Subtraction -> x - y
     Multiplication -> x * y
     Division -> x / y
+
+operator: Parser Operation
+operator =
+  inContext "an operator" <|
+    oneOf
+      [ symbol "+" |> map (always Addition)
+      , symbol "-" |> map (always Subtraction)
+      , symbol "*" |> map (always Multiplication)
+      , symbol "/" |> map (always Division)
+      ]
