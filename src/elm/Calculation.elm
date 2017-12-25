@@ -1,7 +1,7 @@
 module Calculation exposing (parser, perform)
 
 import Operation exposing (Operation, operate)
-import Number exposing (parser)
+import Number
 import Parser exposing (Parser, (|.), (|=), succeed, float, inContext, end, run)
 
 type alias Calculation =
