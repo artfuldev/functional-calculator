@@ -51,4 +51,4 @@ fixPrecision precision value =
 multiply: Float -> Float -> Float
 multiply x y =
   x * y
-  |> fixPrecision (precision x + precision y)
+    |> fixPrecision (precision x + precision y)
