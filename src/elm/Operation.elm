@@ -28,7 +28,8 @@ parser =
 
 precision: Float -> Int
 precision float =
-  toString float
+  float
+    |> toString
     |> String.split "."
     |> List.tail
     |> Maybe.withDefault []
@@ -38,7 +39,14 @@ precision float =
 
 fixPrecision: Int -> Float -> Float
 fixPrecision precision value =
-  toFloat (round (value * toFloat (10 ^ precision))) / toFloat (10 ^ precision)
+  let
+    multiplier = 10 ^ precision |> toFloat
+    correct = flip (/) multiplier
+  in
+    value * multiplier
+      |> round
+      |> toFloat
+      |> correct
 
 multiply: Float -> Float -> Float
 multiply x y =
