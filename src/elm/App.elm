@@ -46,7 +46,9 @@ updateExpression key model =
         "0" -> expression ++ key
         "+" -> expression ++ key
         "-" -> expression ++ key
-        "*" -> expression ++ key
+        "*" -> expression ++ "x"
+        "x" -> expression ++ key
+        "X" -> expression ++ "x"
         "/" -> expression ++ key
         "." -> expression ++ key
         "e" -> expression ++ key
