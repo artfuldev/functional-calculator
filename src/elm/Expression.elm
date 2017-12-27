@@ -13,7 +13,7 @@ isDelete expression =
 
 isOperator : Expression -> Bool
 isOperator expression =
-  List.member expression <| String.split "" "+-**xX/"
+  List.member expression <| String.split "" "+-*xX/"
 
 addOperator : Expression -> Expression -> Expression
 addOperator expression addendum =
