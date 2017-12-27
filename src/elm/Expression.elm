@@ -3,31 +3,35 @@ module Expression exposing (update)
 type alias Expression
   = String
 
-removeLastCharacter : Expression -> Expression
-removeLastCharacter = String.slice 0 -1
+isDigit : Expression -> Bool
+isDigit expression =
+  List.member expression <| String.split "" "0123456789."
 
-update : Expression -> Expression -> Expression
-update expression addendum =
+isDelete : Expression -> Bool
+isDelete expression =
+  List.member expression [ "Backspace", "Delete" ]
+
+isOperator : Expression -> Bool
+isOperator expression =
+  List.member expression <| String.split "" "+-**xX/"
+
+addOperator : Expression -> Expression -> Expression
+addOperator expression addendum =
   case addendum of
-    "1" -> expression ++ addendum
-    "2" -> expression ++ addendum
-    "3" -> expression ++ addendum
-    "4" -> expression ++ addendum
-    "5" -> expression ++ addendum
-    "6" -> expression ++ addendum
-    "7" -> expression ++ addendum
-    "8" -> expression ++ addendum
-    "9" -> expression ++ addendum
-    "0" -> expression ++ addendum
     "+" -> expression ++ addendum
     "-" -> expression ++ addendum
     "*" -> expression ++ "x"
     "x" -> expression ++ addendum
     "X" -> expression ++ "x"
     "/" -> expression ++ addendum
-    "." -> expression ++ addendum
-    "e" -> expression ++ addendum
-    "E" -> expression ++ addendum
-    "Backspace" -> removeLastCharacter expression
-    "Delete" -> removeLastCharacter expression
     _ -> expression
+
+removeLastCharacter : Expression -> Expression
+removeLastCharacter = String.slice 0 -1
+
+update : Expression -> Expression -> Expression
+update expression addendum =
+  if isDigit addendum then expression ++ addendum
+  else if isDelete addendum then removeLastCharacter expression
+  else if isOperator addendum then addOperator expression addendum
+  else expression
