@@ -6,6 +6,7 @@ import Events exposing (onKeyDown)
 
 import Calculation exposing (parser, perform)
 import Parser exposing (run)
+import Expression
 
 main : Program Never Model Msg
 main =
@@ -25,38 +26,9 @@ model =
 type Msg
   = KeyPressed String
 
-removeLastCharacter : String -> String
-removeLastCharacter = String.slice 0 -1
-
 updateExpression : String -> Model -> Model
 updateExpression key model =
-  let
-    { expression } = model
-    exp =
-      case key of
-        "1" -> expression ++ key
-        "2" -> expression ++ key
-        "3" -> expression ++ key
-        "4" -> expression ++ key
-        "5" -> expression ++ key
-        "6" -> expression ++ key
-        "7" -> expression ++ key
-        "8" -> expression ++ key
-        "9" -> expression ++ key
-        "0" -> expression ++ key
-        "+" -> expression ++ key
-        "-" -> expression ++ key
-        "*" -> expression ++ "x"
-        "x" -> expression ++ key
-        "X" -> expression ++ "x"
-        "/" -> expression ++ key
-        "." -> expression ++ key
-        "e" -> expression ++ key
-        "E" -> expression ++ key
-        "Backspace" -> removeLastCharacter expression
-        "Delete" -> removeLastCharacter expression
-        _ -> expression
-  in { model | expression = exp }
+  { model | expression = Expression.update model.expression key }
 
 updateResult : Model -> Model
 updateResult model =
