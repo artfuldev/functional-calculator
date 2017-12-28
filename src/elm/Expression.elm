@@ -13,7 +13,7 @@ isDelete expression =
 
 isOperator : Expression -> Bool
 isOperator expression =
-  List.member expression [ "+", "-", "×", "÷" ]
+  List.member expression [ "+", "-", "×", "÷", "*", "/", "x", "X" ]
 
 fixOperator : Expression -> Expression
 fixOperator operator =
@@ -38,9 +38,7 @@ removeLastCharacter = String.slice 0 -1
 
 update : Expression -> Expression -> Expression
 update expression addendum =
-  let new = fixOperator addendum
-  in
-    if isDigit new then expression ++ new
-    else if isDelete new then removeLastCharacter new
-    else if isOperator new then addOperator expression new
+  if isDigit addendum then expression ++ addendum
+    else if isDelete addendum then removeLastCharacter addendum
+    else if isOperator addendum then addOperator expression <| fixOperator addendum
     else expression
