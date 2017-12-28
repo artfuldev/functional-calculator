@@ -39,6 +39,6 @@ removeLastCharacter = String.slice 0 -1
 update : Expression -> Expression -> Expression
 update expression addendum =
   if isDigit addendum then expression ++ addendum
-  else if isDelete addendum then removeLastCharacter addendum
+  else if isDelete addendum then removeLastCharacter expression
   else if isOperator addendum then addOperator expression <| fixOperator addendum
   else expression
