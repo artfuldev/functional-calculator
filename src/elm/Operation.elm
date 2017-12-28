@@ -22,8 +22,8 @@ parser =
     oneOf
       [ symbol "+" |> map (always Addition)
       , symbol "-" |> map (always Subtraction)
-      , symbol "x" |> map (always Multiplication)
-      , symbol "/" |> map (always Division)
+      , symbol "×" |> map (always Multiplication)
+      , symbol "÷" |> map (always Division)
       ]
 
 precision: Float -> Int
