@@ -20,7 +20,7 @@ parser =
     oneOf
       [ digit
       , symbol "." |> map (always Period)
-      , sign |> map (\s -> Sign s)
+      , sign |> map Sign
       , delete
       ]
 
