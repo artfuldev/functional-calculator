@@ -25,7 +25,7 @@ model =
   }
 
 type Msg
-  = KeyPressed Key
+  = KeyPressed String
 
 updateExpression : Key -> Model -> Model
 updateExpression key model =
@@ -44,7 +44,10 @@ result expression =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    KeyPressed key -> model |> updateExpression key |> updateResult
+    KeyPressed keyString ->
+      case run Key.parser keyString of
+        Ok key -> model |> updateExpression key |> updateResult
+        Err _ -> model
 
 toResultString : Maybe Float -> String
 toResultString result =
@@ -52,17 +55,11 @@ toResultString result =
     Just float -> toString float
     Nothing -> ""
 
-parseKey : String -> Key
-parseKey input =
-  case run Key.parser input of
-    Ok key -> key
-    Err _ -> Key.Invalid
-
 view : Model -> Html Msg
 view { expression, result } =
   div [ id "app" ]
     [ header []
-      [ input [ placeholder "0", onKeyDown <| KeyPressed << parseKey, value expression ] []
+      [ input [ placeholder "0", onKeyDown KeyPressed, value expression ] []
       , p [] [ text <| toResultString result ]
       ]
     , main_ [] []  

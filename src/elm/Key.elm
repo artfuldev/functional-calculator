@@ -13,7 +13,6 @@ type Key
   | Period
   | Sign ArithmeticSign
   | Delete
-  | Invalid
 
 parser : Parser Key
 parser =
@@ -23,7 +22,6 @@ parser =
       , symbol "." |> map (always Period)
       , sign |> map (\s -> Sign s)
       , delete
-      , succeed Invalid
       ]
 
 digit : Parser Key
