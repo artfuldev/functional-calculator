@@ -1,44 +1,26 @@
 module Expression exposing (update)
 
+import Key exposing (Key(..), ArithmeticSign(..))
+
 type alias Expression
   = String
 
-isDigit : Expression -> Bool
-isDigit expression =
-  List.member expression <| String.split "" "0123456789."
-
-isDelete : Expression -> Bool
-isDelete expression =
-  List.member expression [ "Backspace", "Delete" ]
-
-isOperator : Expression -> Bool
-isOperator expression =
-  List.member expression [ "+", "-", "×", "÷", "*", "/", "x", "X" ]
-
-fixOperator : Expression -> Expression
-fixOperator operator =
-  case operator of
-    "*" -> "×"
-    "x" -> "×"
-    "X" -> "×"
-    "/" -> "÷"
-    _ -> operator
-
-addOperator : Expression -> Expression -> Expression
-addOperator expression addendum =
-  case addendum of
-    "+" -> expression ++ addendum
-    "-" -> expression ++ addendum
-    "×" -> expression ++ addendum
-    "÷" -> expression ++ addendum
-    _ -> expression
+addOperator : Expression -> ArithmeticSign -> Expression
+addOperator expression sign =
+  case sign of
+    Plus -> expression ++ "+"
+    Minus -> expression ++ "-"
+    Times -> expression ++ "×"
+    Obelus -> expression ++ "÷"
 
 removeLastCharacter : Expression -> Expression
 removeLastCharacter = String.slice 0 -1
 
-update : Expression -> Expression -> Expression
-update expression addendum =
-  if isDigit addendum then expression ++ addendum
-  else if isDelete addendum then removeLastCharacter expression
-  else if isOperator addendum then addOperator expression <| fixOperator addendum
-  else expression
+update : Expression -> Key -> Expression
+update expression key =
+  case key of
+    Digit d -> expression ++ toString d
+    Period -> expression ++ "."
+    Delete -> removeLastCharacter expression
+    Sign s -> addOperator expression s
+    Invalid -> expression

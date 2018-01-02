@@ -4,9 +4,10 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Events exposing (onKeyDown)
 
-import Calculation exposing (parser, perform)
+import Calculation exposing (perform)
 import Parser exposing (run)
 import Expression
+import Key exposing (Key)
 
 main : Program Never Model Msg
 main =
@@ -24,9 +25,9 @@ model =
   }
 
 type Msg
-  = KeyPressed String
+  = KeyPressed Key
 
-updateExpression : String -> Model -> Model
+updateExpression : Key -> Model -> Model
 updateExpression key model =
   { model | expression = Expression.update model.expression key }
 
@@ -36,7 +37,7 @@ updateResult model =
 
 result : String -> Maybe Float
 result expression =
-  case run parser expression of
+  case run Calculation.parser expression of
     Ok calculation -> Just <| perform calculation
     Err _ -> Nothing
 
@@ -51,12 +52,18 @@ toResultString result =
     Just float -> toString float
     Nothing -> ""
 
+parseKey : String -> Key
+parseKey input =
+  case run Key.parser input of
+    Ok key -> key
+    Err _ -> Key.Invalid
+
 view : Model -> Html Msg
-view model =
+view { expression, result } =
   div [ id "app" ]
     [ header []
-      [ input [ placeholder "0", onKeyDown KeyPressed, value model.expression ] []
-      , p [] [ text <| toResultString model.result ]
+      [ input [ placeholder "0", onKeyDown <| KeyPressed << parseKey, value expression ] []
+      , p [] [ text <| toResultString result ]
       ]
     , main_ [] []  
     ]
