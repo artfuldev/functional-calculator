@@ -1,4 +1,4 @@
-module ArithmeticSign exposing (ArithmeticSign(..), parser)
+module ArithmeticSign exposing (ArithmeticSign(..), parser, toString)
 
 import Parser exposing (Parser, map, oneOf, symbol)
 
@@ -18,3 +18,11 @@ parser =
     , symbol "+" |> map (always Plus)
     , symbol "-" |> map (always Minus)
     ]
+
+toString : ArithmeticSign -> String
+toString sign =
+  case sign of
+    Plus -> "+"
+    Minus -> "-"
+    Times -> "×"
+    Obelus -> "÷"

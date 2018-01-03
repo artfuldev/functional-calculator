@@ -9,10 +9,10 @@ type alias Expression
 addOperator : Expression -> ArithmeticSign -> Expression
 addOperator expression sign =
   case sign of
-    Plus -> expression ++ "+"
-    Minus -> expression ++ "-"
-    Times -> expression ++ "×"
-    Obelus -> expression ++ "÷"
+    Plus -> expression ++ ArithmeticSign.toString sign
+    Minus -> expression ++ ArithmeticSign.toString sign
+    Times -> expression ++ ArithmeticSign.toString sign
+    Obelus -> expression ++ ArithmeticSign.toString sign
 
 removeLastCharacter : Expression -> Expression
 removeLastCharacter = String.slice 0 -1
