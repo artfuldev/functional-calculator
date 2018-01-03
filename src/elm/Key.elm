@@ -1,12 +1,7 @@
-module Key exposing (Key(..), parser, ArithmeticSign(..))
+module Key exposing (Key(..), parser)
 
 import Parser exposing (Parser, inContext, (|=), (|.), map, oneOf, int, keyword, succeed, symbol)
-
-type ArithmeticSign
-  = Plus
-  | Minus
-  | Times
-  | Obelus
+import ArithmeticSign exposing (ArithmeticSign, parser)
 
 type Key
   = Digit Int
@@ -20,24 +15,13 @@ parser =
     oneOf
       [ digit
       , symbol "." |> map (always Period)
-      , sign |> map Sign
+      , ArithmeticSign.parser |> map Sign
       , delete
       ]
 
 digit : Parser Key
 digit =
   int |> map Digit
-
-sign : Parser ArithmeticSign
-sign =
-  oneOf
-    [ symbol "*" |> map (always Times)
-    , symbol "x" |> map (always Times)
-    , symbol "X" |> map (always Times)
-    , symbol "/" |> map (always Obelus)
-    , symbol "+" |> map (always Plus)
-    , symbol "-" |> map (always Minus)
-    ]
 
 delete : Parser Key
 delete =

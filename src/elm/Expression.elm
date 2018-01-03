@@ -1,6 +1,7 @@
 module Expression exposing (update)
 
-import Key exposing (Key(..), ArithmeticSign(..))
+import Key exposing (Key(..))
+import ArithmeticSign exposing (ArithmeticSign(..))
 
 type alias Expression
   = String
