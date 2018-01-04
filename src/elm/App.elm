@@ -57,9 +57,9 @@ toResultString result =
 
 view : Model -> Html Msg
 view { expression, result } =
-  div [ id "app" ]
+  div [ id "app", onKeyDown KeyPressed, tabindex 1 ]
     [ header []
-      [ input [ placeholder "0", onKeyDown KeyPressed, value expression, readonly True ] []
+      [ input [ placeholder "0", value expression, readonly True ] []
       , p [] [ text <| toResultString result ]
       ]
     , main_ [] []  
