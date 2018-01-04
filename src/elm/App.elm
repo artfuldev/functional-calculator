@@ -59,7 +59,7 @@ view : Model -> Html Msg
 view { expression, result } =
   div [ id "app", onKeyDown KeyPressed, tabindex 1 ]
     [ header []
-      [ input [ placeholder "0", value expression, readonly True ] []
+      [ input [ placeholder "0", value expression, readonly True, autofocus True ] []
       , p [] [ text <| toResultString result ]
       ]
     , main_ [] []  
