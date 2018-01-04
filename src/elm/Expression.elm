@@ -1,4 +1,4 @@
-module Expression exposing (update)
+module Expression exposing (Expression, update)
 
 import Key exposing (Key(..))
 import ArithmeticSign exposing (ArithmeticSign(..))
