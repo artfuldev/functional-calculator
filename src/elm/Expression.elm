@@ -24,3 +24,4 @@ update expression key =
     Period -> expression ++ "."
     Delete -> removeLastCharacter expression
     Sign s -> addOperator expression s
+    Cancel -> ""

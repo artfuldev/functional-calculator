@@ -8,6 +8,7 @@ type Key
   | Period
   | Sign ArithmeticSign
   | Delete
+  | Cancel
 
 parser : Parser Key
 parser =
@@ -17,6 +18,7 @@ parser =
       , symbol "." |> map (always Period)
       , ArithmeticSign.parser |> map Sign
       , delete
+      , keyword "Esc" |> map (always Cancel)
       ]
 
 digit : Parser Key
