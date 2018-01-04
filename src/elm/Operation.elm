@@ -1,6 +1,7 @@
 module Operation exposing (Operation, operate, parser)
 
 import Parser exposing (Parser, (|.), (|=), symbol, oneOf, map, inContext)
+import ArithmeticSign exposing (ArithmeticSign(..), parser)
 
 type Operation
   = Addition
@@ -16,15 +17,19 @@ operate operation x y =
     Multiplication -> multiply x y
     Division -> x / y
 
+toOperation : ArithmeticSign -> Operation
+toOperation sign =
+  case sign of
+    Plus -> Addition
+    Minus -> Subtraction
+    Times -> Multiplication
+    Obelus -> Division
+
 parser: Parser Operation
 parser =
-  inContext "an operator" <|
-    oneOf
-      [ symbol "+" |> map (always Addition)
-      , symbol "-" |> map (always Subtraction)
-      , symbol "×" |> map (always Multiplication)
-      , symbol "÷" |> map (always Division)
-      ]
+  ArithmeticSign.parser
+    |> map toOperation
+    |> inContext "an operator"
 
 precision: Float -> Int
 precision float =
