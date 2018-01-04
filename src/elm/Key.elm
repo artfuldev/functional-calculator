@@ -9,6 +9,7 @@ type Key
   | Sign ArithmeticSign
   | Delete
   | Cancel
+  | Evaluate
 
 parser : Parser Key
 parser =
@@ -19,6 +20,7 @@ parser =
       , ArithmeticSign.parser |> map Sign
       , delete
       , keyword "Esc" |> map (always Cancel)
+      , equals
       ]
 
 digit : Parser Key
@@ -32,3 +34,11 @@ delete =
     , keyword "Backspace"
     ]
     |> map (always Delete)
+
+equals : Parser Key
+equals =
+  oneOf
+    [ symbol "="
+    , keyword "Enter"
+    ]
+    |> map (always Evaluate)

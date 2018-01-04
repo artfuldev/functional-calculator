@@ -25,3 +25,4 @@ update expression key =
     Delete -> removeLastCharacter expression
     Sign s -> addOperator expression s
     Cancel -> ""
+    Evaluate -> expression

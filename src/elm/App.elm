@@ -6,7 +6,7 @@ import Events exposing (onKeyDown)
 
 import Parser exposing (run)
 import Expression exposing (Expression)
-import Key exposing (Key)
+import Key exposing (Key(..))
 import Evaluation exposing (Evaluation)
 
 main : Program Never Model Msg
@@ -31,16 +31,21 @@ updateExpression : Key -> Model -> Model
 updateExpression key model =
   { model | expression = Expression.update model.expression key }
 
-evaluate : Model -> Model
-evaluate model =
-  { model | evaluation = Evaluation.evaluate model.expression }
-
+evaluate : Key -> Model -> Model
+evaluate key model =
+  case key of
+    Evaluate ->
+      case model.evaluation of
+        Just evaluation -> { model | expression = toString evaluation, evaluation = Nothing }
+        Nothing -> model
+    _ -> { model | evaluation = Evaluation.evaluate model.expression }
+  
 update : Msg -> Model -> Model
 update msg model =
   case msg of
     KeyPressed keyString ->
       case run Key.parser keyString of
-        Ok key -> model |> updateExpression key |> evaluate
+        Ok key -> model |> updateExpression key |> evaluate key
         Err _ -> model
 
 view : Model -> Html Msg
