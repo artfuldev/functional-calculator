@@ -4,8 +4,8 @@ import Expression exposing (Expression)
 import Calculation exposing (perform)
 import Parser exposing (run)
 
-type alias Evaluation =
-  Maybe Float
+type alias Evaluation
+  = Maybe Float
 
 evaluate : Expression -> Evaluation
 evaluate expression =
