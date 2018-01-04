@@ -39,8 +39,8 @@ exponent =
       |= float
 
 applyExponent : Float -> Float -> Float
-applyExponent coeff exponent =
-  coeff * (10 ^ exponent)
+applyExponent coefficient exponent =
+  coefficient * (10 ^ exponent)
 
 type Sign
   = Positive
