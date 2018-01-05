@@ -2,12 +2,14 @@ module App exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Events exposing (onKeyDown)
 
 import Parser exposing (run)
 import Expression exposing (Expression)
 import Key exposing (Key(..))
 import Evaluation exposing (Evaluation)
+import ArithmeticSign exposing (ArithmeticSign(..))
 
 main : Program Never Model Msg
 main =
@@ -26,6 +28,7 @@ model =
 
 type Msg
   = KeyPressed String
+  | KeyTapped Key
 
 updateExpression : Key -> Model -> Model
 updateExpression key model =
@@ -39,14 +42,26 @@ evaluate key model =
         Just evaluation -> { model | expression = toString evaluation, evaluation = Nothing }
         Nothing -> model
     _ -> { model | evaluation = Evaluation.evaluate model.expression }
+
+processKey : Key -> Model -> Model
+processKey key model =
+  model
+    |> updateExpression key
+    |> evaluate key
+
   
 update : Msg -> Model -> Model
 update msg model =
   case msg of
     KeyPressed keyString ->
       case run Key.parser keyString of
-        Ok key -> model |> updateExpression key |> evaluate key
+        Ok key -> processKey key model
         Err _ -> model
+    KeyTapped key -> processKey key model
+
+keyView : Key -> Html Msg
+keyView key =
+  button [ onClick <| KeyTapped <| key ] [ text <| Key.toString key ]
 
 view : Model -> Html Msg
 view { expression, evaluation } =
@@ -55,5 +70,27 @@ view { expression, evaluation } =
       [ input [ placeholder "0", value expression, readonly True, autofocus True ] []
       , p [] [ text <| Evaluation.toString evaluation ]
       ]
-    , main_ [] []  
+    , main_ []
+      [ div [ class "keypad" ]
+        [ keyView <| Digit 9
+        , keyView <| Digit 8
+        , keyView <| Digit 7
+        , keyView <| Digit 6
+        , keyView <| Digit 5
+        , keyView <| Digit 4
+        , keyView <| Digit 3
+        , keyView <| Digit 2
+        , keyView <| Digit 1
+        , keyView Evaluate
+        , keyView <| Digit 0
+        , keyView Period
+        ]
+      , div [ class "operations" ]
+        [ keyView Delete
+        , keyView <| Sign Obelus
+        , keyView <| Sign Times
+        , keyView <| Sign Minus
+        , keyView <| Sign Plus
+        ]
+      ]  
     ]

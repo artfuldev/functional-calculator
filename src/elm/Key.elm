@@ -1,7 +1,7 @@
-module Key exposing (Key(..), parser)
+module Key exposing (Key(..), parser, toString)
 
 import Parser exposing (Parser, inContext, (|=), (|.), map, oneOf, int, keyword, succeed, symbol)
-import ArithmeticSign exposing (ArithmeticSign, parser)
+import ArithmeticSign exposing (ArithmeticSign)
 
 type Key
   = Digit Int
@@ -42,3 +42,13 @@ equals =
     , keyword "Enter"
     ]
     |> map (always Evaluate)
+
+toString : Key -> String
+toString key =
+  case key of
+    Digit digit -> Basics.toString digit
+    Period -> "."
+    Sign sign -> ArithmeticSign.toString sign
+    Delete -> "DEL"
+    Cancel -> "C"
+    Evaluate -> "="
