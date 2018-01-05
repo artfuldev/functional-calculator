@@ -60,4 +60,39 @@ header {
 main {
   display: flex;
   flex: 1 1;
+
+  button {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: $foreground-color;
+    font-size: xx-large;
+    font-weight: 100;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  
+  .keypad {
+      display: flex;
+      flex: 1 1 80%;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+      background: $black-font-color;
+
+      button {
+        width: 33%;
+    }
+  }
+
+  .operations {
+    display: flex;
+    flex: 1 1 20%;
+    flex-wrap: wrap;
+
+    button {
+      width: 100%;
+    }
+  }
 }
