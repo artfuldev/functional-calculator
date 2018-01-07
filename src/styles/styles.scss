@@ -1,7 +1,7 @@
 $background-color: #424242 !default;
 $foreground-color: rgba(255,255,255,0.87) !default;
 $black-font-color: #333 !default;
-$base-font-family: 'Segoe UI', Helvetica, Roboto, Arial, sans-serif !default;
+$base-font-family: Roboto, 'Segoe UI', Helvetica, Arial, sans-serif !default;
 
 html, body {
   height: 100%;
@@ -10,6 +10,7 @@ html, body {
   padding: 0;
   font-size: 100%;
   font-family: $base-font-family;
+  font-weight: 100;
 }
 
 #app {
@@ -25,11 +26,12 @@ html, body {
 
 header {
   display: flex;
-  flex: 0 0 9rem;
+  flex: 0 0 15rem;
   background: white;
   color: $black-font-color;
   flex-direction: column;
-  padding: 1rem 2rem;
+  padding: 2rem;
+  padding-top: 0;
 
   input, p {
     background: transparent;
@@ -43,6 +45,7 @@ header {
   input {
     flex: 0 0 60%;
     font-family: $base-font-family !important;
+    font-size: 6rem;
 
     &:focus, &:active, &:hover {
       border: none;
@@ -52,7 +55,6 @@ header {
 
   p {
     flex: 1;
-    font-size: 3rem;
     opacity: 0.75;
   }
 }
@@ -66,8 +68,9 @@ main {
     outline: none;
     border: none;
     color: $foreground-color;
-    font-size: xx-large;
+    font-size: 3rem;
     font-weight: 100;
+    font-family: $base-font-family !important;
 
     &:hover {
       cursor: pointer;
@@ -93,6 +96,7 @@ main {
 
     button {
       width: 100%;
+      font-size: 2rem;
     }
   }
 }
