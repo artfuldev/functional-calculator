@@ -69,7 +69,7 @@ keypad =
   [ Digit 9 , Digit 8, Digit 7, Digit 6, Digit 5 , Digit 4 , Digit 3 , Digit 2 , Digit 1 , Evaluate , Digit 0 , Period ]
   |> List.map keyView
 
-operations: List (Html Msg)
+operations : List (Html Msg)
 operations =
   [ Delete , Sign Obelus , Sign Times , Sign Minus , Sign Plus ]
   |> List.map keyView
