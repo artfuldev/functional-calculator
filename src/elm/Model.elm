@@ -11,33 +11,21 @@ type alias Model =
   , evaluation: Evaluation
   }
 
-setExpression : Expression -> Model -> Model
-setExpression expression model =
-  { model | expression = expression }
-
-setEvaluation : Evaluation -> Model -> Model
-setEvaluation evaluation model =
-  { model | evaluation = evaluation }
-
 default : Model
 default = Model "" Nothing
 
 updateExpression : Key -> Model -> Model
 updateExpression key model =
-  let expression = model.expression |> Expression.update key
-  in setExpression expression model
+  { model | expression = Expression.update key model.expression }
 
 evaluate : Key -> Model -> Model
 evaluate key model =
   case key of
     Evaluate ->
       case model.evaluation of
-        Just evaluation ->
-          model
-            |> setExpression (toString evaluation)
-            |> setEvaluation Nothing
+        Just evaluation -> { model | expression = toString evaluation , evaluation = Nothing }
         Nothing -> model
-    _ -> model |> setEvaluation (Evaluation.evaluate model.expression)
+    _ -> { model | evaluation = Evaluation.evaluate model.expression }
 
 processKey : Key -> Model -> Model
 processKey key =
