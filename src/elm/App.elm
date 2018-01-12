@@ -33,7 +33,7 @@ type Msg
 
 updateExpression : Key -> Model -> Model
 updateExpression key model =
-  { model | expression = Expression.update model.expression key }
+  { model | expression = Expression.update key model.expression }
 
 evaluate : Key -> Model -> Model
 evaluate key model =

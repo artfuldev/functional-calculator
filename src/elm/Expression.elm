@@ -6,8 +6,8 @@ import ArithmeticSign exposing (ArithmeticSign(..))
 type alias Expression
   = String
 
-addOperator : Expression -> ArithmeticSign -> Expression
-addOperator expression sign =
+addOperator : ArithmeticSign -> Expression -> Expression
+addOperator sign expression =
   case sign of
     Plus -> expression ++ ArithmeticSign.toString sign
     Minus -> expression ++ ArithmeticSign.toString sign
@@ -17,12 +17,12 @@ addOperator expression sign =
 removeLastCharacter : Expression -> Expression
 removeLastCharacter = String.slice 0 -1
 
-update : Expression -> Key -> Expression
-update expression key =
+update : Key -> Expression -> Expression
+update key expression =
   case key of
-    Digit d -> expression ++ toString d
+    Digit digit -> expression ++ toString digit
     Period -> expression ++ "."
     Delete -> removeLastCharacter expression
-    Sign s -> addOperator expression s
+    Sign sign -> addOperator sign expression
     Cancel -> ""
     Evaluate -> expression
