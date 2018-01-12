@@ -64,6 +64,17 @@ keyView : Key -> Html Msg
 keyView key =
   button [ onClick <| KeyTapped <| key ] [ text <| Key.toString key ]
 
+keypad : List (Html Msg)
+keypad =
+  [ Digit 9 , Digit 8, Digit 7, Digit 6, Digit 5 , Digit 4 , Digit 3 , Digit 2 , Digit 1 , Evaluate , Digit 0 , Period ]
+  |> List.map keyView
+
+operations: List (Html Msg)
+operations =
+  [ Delete , Sign Obelus , Sign Times , Sign Minus , Sign Plus ]
+  |> List.map keyView
+  
+
 view : Model -> Html Msg
 view { expression, evaluation } =
   div [ id "app", onKeyDown KeyPressed, tabindex 1 ]
@@ -72,27 +83,8 @@ view { expression, evaluation } =
       , p [] [ text <| Evaluation.toString evaluation ]
       ]
     , main_ []
-      [ div [ class "keypad" ]
-        [ keyView <| Digit 9
-        , keyView <| Digit 8
-        , keyView <| Digit 7
-        , keyView <| Digit 6
-        , keyView <| Digit 5
-        , keyView <| Digit 4
-        , keyView <| Digit 3
-        , keyView <| Digit 2
-        , keyView <| Digit 1
-        , keyView Evaluate
-        , keyView <| Digit 0
-        , keyView Period
-        ]
-      , div [ class "operations" ]
-        [ keyView Delete
-        , keyView <| Sign Obelus
-        , keyView <| Sign Times
-        , keyView <| Sign Minus
-        , keyView <| Sign Plus
-        ]
+      [ div [ class "keypad" ] keypad
+      , div [ class "operations" ] operations
       ]
     , footer []
       [ div []
