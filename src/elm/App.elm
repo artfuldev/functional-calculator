@@ -11,51 +11,12 @@ import Key exposing (Key(..))
 import Evaluation exposing (Evaluation)
 import ArithmeticSign exposing (ArithmeticSign(..))
 import Logo exposing (logo)
+import Model exposing (Model, update)
+import Msg exposing (Msg(..))
 
 main : Program Never Model Msg
 main =
-  Html.beginnerProgram { model = model, view = view, update = update }
-
-type alias Model =
-  { expression: Expression
-  , evaluation: Evaluation
-  }
-
-model : Model
-model =
-  { expression = ""
-  , evaluation = Nothing
-  }
-
-type Msg
-  = KeyPressed String
-  | KeyTapped Key
-
-updateExpression : Key -> Model -> Model
-updateExpression key model =
-  { model | expression = Expression.update key model.expression }
-
-evaluate : Key -> Model -> Model
-evaluate key model =
-  case key of
-    Evaluate ->
-      case model.evaluation of
-        Just evaluation -> { model | expression = toString evaluation, evaluation = Nothing }
-        Nothing -> model
-    _ -> { model | evaluation = Evaluation.evaluate model.expression }
-
-processKey : Key -> Model -> Model
-processKey key =
-  updateExpression key >> evaluate key
-  
-update : Msg -> Model -> Model
-update msg =
-  case msg of
-    KeyPressed keyString ->
-      case run Key.parser keyString of
-        Ok key -> processKey key
-        Err _ -> identity
-    KeyTapped key -> processKey key
+  Html.beginnerProgram { model = Model.default, view = view, update = update }
 
 keyView : Key -> Html Msg
 keyView key =
