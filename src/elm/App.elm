@@ -10,6 +10,7 @@ import Expression exposing (Expression)
 import Key exposing (Key(..))
 import Evaluation exposing (Evaluation)
 import ArithmeticSign exposing (ArithmeticSign(..))
+import Logo exposing (logo)
 
 main : Program Never Model Msg
 main =
@@ -92,5 +93,18 @@ view { expression, evaluation } =
         , keyView <| Sign Minus
         , keyView <| Sign Plus
         ]
-      ]  
+      ]
+    , footer []
+      [ div []
+        [ text "Made with "
+        , span [ class "heart" ] [ text "❤" ]
+        , text " using "
+        , logo
+        , text " elm by "
+        , a [ class "author", href "https://github.com/artfuldev" ] [ text "@artfuldev" ]
+        , div [ class "view-source" ]
+          [ a [ class "source", href "https://github.com/artfuldev/functional-calculator/tree/gh-pages/" ] [ text "View Source" ]
+          ]
+        ]
+      ]
     ]

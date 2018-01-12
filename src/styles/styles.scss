@@ -100,3 +100,39 @@ main {
     }
   }
 }
+
+footer {
+  padding: 1rem 0;
+  display: flex;
+  flex: 0 0 3rem;
+  flex-direction: column;
+  align-content: center;
+  background: #666;
+
+  div {
+    text-align: center;
+  }
+
+  .heart {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  a {
+    color: white;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    &, & polygon, & rect {
+      fill: currentColor;
+    }
+  }
+
+  .view-source {
+    margin-top: 0.5rem;
+  }
+}
