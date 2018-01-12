@@ -10,5 +10,6 @@
     "dist": true
   },
   "elm.makeCommand": "./node_modules/.bin/elm-make",
-  "elm.formatCommand": "./node_modules/.bin/elm-format"
+  "elm.formatCommand": "./node_modules/.bin/elm-format",
+  "elm.formatOnSave": true
 }
