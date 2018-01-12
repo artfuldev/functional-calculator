@@ -24,10 +24,8 @@ default = Model "" Nothing
 
 updateExpression : Key -> Model -> Model
 updateExpression key model =
-  model
-    |> .expression
-    |> Expression.update key
-    |> flip(setExpression) model
+  let expression = model.expression |> Expression.update key
+  in setExpression expression model
 
 evaluate : Key -> Model -> Model
 evaluate key model =
