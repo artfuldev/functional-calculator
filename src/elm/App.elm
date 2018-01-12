@@ -45,11 +45,8 @@ evaluate key model =
     _ -> { model | evaluation = Evaluation.evaluate model.expression }
 
 processKey : Key -> Model -> Model
-processKey key model =
-  model
-    |> updateExpression key
-    |> evaluate key
-
+processKey key =
+  updateExpression key >> evaluate key
   
 update : Msg -> Model -> Model
 update msg model =
