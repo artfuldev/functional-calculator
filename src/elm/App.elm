@@ -49,13 +49,13 @@ processKey key =
   updateExpression key >> evaluate key
   
 update : Msg -> Model -> Model
-update msg model =
+update msg =
   case msg of
     KeyPressed keyString ->
       case run Key.parser keyString of
-        Ok key -> processKey key model
-        Err _ -> model
-    KeyTapped key -> processKey key model
+        Ok key -> processKey key
+        Err _ -> identity
+    KeyTapped key -> processKey key
 
 keyView : Key -> Html Msg
 keyView key =
