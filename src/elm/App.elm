@@ -93,7 +93,7 @@ view { expression, evaluation } =
         , text " elm by "
         , a [ class "author", href "https://github.com/artfuldev" ] [ text "@artfuldev" ]
         , div [ class "view-source" ]
-          [ a [ class "source", href "https://github.com/artfuldev/functional-calculator/tree/gh-pages/" ] [ text "View Source" ]
+          [ a [ class "source", href "https://github.com/artfuldev/functional-calculator/" ] [ text "View Source" ]
           ]
         ]
       ]
