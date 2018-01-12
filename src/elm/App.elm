@@ -96,9 +96,7 @@ view { expression, evaluation } =
       ]
     , footer []
       [ div []
-        [ text "Made with "
-        , span [ class "heart" ] [ text "❤" ]
-        , text " using "
+        [ text "Made with ❤ using "
         , logo
         , text " elm by "
         , a [ class "author", href "https://github.com/artfuldev" ] [ text "@artfuldev" ]
