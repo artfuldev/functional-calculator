@@ -113,7 +113,8 @@ if (isProd === true) {
                 minimize: true,
                 compressor: {
                     warnings: false
-                }
+                },
+                sourceMap: true,
                 // mangle:  true
             })
         ]
