@@ -1,10 +1,10 @@
-module App exposing (..)
+module App exposing (main)
 
-import Html exposing (..)
+import Html exposing (beginnerProgram)
 import Model exposing (Model, update)
-import Msg exposing (Msg(..))
+import Msg exposing (Msg)
 import View exposing (view)
 
 main : Program Never Model Msg
 main =
-  Html.beginnerProgram { model = Model.default, view = view, update = update }
+  beginnerProgram { model = Model.default, view = view, update = update }
