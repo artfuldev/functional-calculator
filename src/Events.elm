@@ -1,12 +1,13 @@
 module Events exposing (onKeyDown)
 
 import Html exposing (Attribute)
-import Html.Events exposing (onWithOptions, Options, keyCode)
+import Html.Events exposing (keyCode, custom)
 import Json.Decode as Json exposing (field, string, map)
 
-eventOptions : Options
-eventOptions = 
-  { stopPropagation = True
+withOptions : msg -> { message: msg, stopPropagation: Bool, preventDefault: Bool }
+withOptions msg = 
+  { message = msg
+  , stopPropagation = True
   , preventDefault = True
   }
 
@@ -16,4 +17,4 @@ key =
 
 onKeyDown : (String -> msg) -> Attribute msg
 onKeyDown handler =
-  onWithOptions "keydown" eventOptions <| map handler key
+  custom "keydown" <| map withOptions <| map handler key

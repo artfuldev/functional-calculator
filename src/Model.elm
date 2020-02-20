@@ -23,7 +23,7 @@ evaluate key model =
   case key of
     Evaluate ->
       case model.evaluation of
-        Just evaluation -> { model | expression = toString evaluation , evaluation = Nothing }
+        Just evaluation -> { model | expression = String.fromFloat evaluation , evaluation = Nothing }
         Nothing -> model
     _ -> { model | evaluation = Evaluation.evaluate model.expression }
 

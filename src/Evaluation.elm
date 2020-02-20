@@ -16,5 +16,5 @@ evaluate expression =
 toString : Evaluation -> String
 toString result =
   case result of
-    Just float -> Basics.toString float
+    Just float -> String.fromFloat float
     Nothing -> ""

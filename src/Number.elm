@@ -1,14 +1,13 @@
 module Number exposing (parser)
 
-import Parser exposing (Parser, (|.), (|=), inContext, succeed, float, oneOf, map, symbol, andThen)
+import Parser exposing (Parser, (|.), (|=), succeed, float, oneOf, map, symbol, andThen)
 
 -- The implementation is a simplified version adapted from https://github.com/zwilias/elm-json
 parser : Parser Float
 parser =
-  inContext "a number" <|
-    succeed (\sign number -> applySign sign number)
-      |= maybeNegative
-      |= parseNumber
+  succeed applySign
+    |= maybeNegative
+    |= parseNumber
 
 maybeNegative : Parser Sign
 maybeNegative =
@@ -24,23 +23,21 @@ parseNumber =
 
 maybeExponentiate : Float -> Parser Float
 maybeExponentiate number =
-  inContext "maybe exponentiate" <|
-    oneOf
-      [ exponent |> map (applyExponent number)
-      , succeed number
-      ]
+  oneOf
+    [ exponent |> map (applyExponent number)
+    , succeed number
+    ]
 
 exponent : Parser Float
 exponent =
-  inContext "exponent" <|
-    succeed applySign
-      |. oneOf [ symbol "e", symbol "E" ]
-      |= sign
-      |= float
+  succeed applySign
+    |. oneOf [ symbol "e", symbol "E" ]
+    |= sign
+    |= float
 
 applyExponent : Float -> Float -> Float
-applyExponent coefficient exponent =
-  coefficient * (10 ^ exponent)
+applyExponent coefficient e =
+  coefficient * (10 ^ e)
 
 type Sign
   = Positive
@@ -55,7 +52,7 @@ sign =
     ]
 
 applySign : Sign -> number -> number
-applySign sign number =
-  case sign of
+applySign s number =
+  case s of
     Positive -> number
     Negative -> -number

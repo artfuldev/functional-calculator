@@ -20,7 +20,7 @@ removeLastCharacter = String.slice 0 -1
 update : Key -> Expression -> Expression
 update key expression =
   case key of
-    Digit digit -> expression ++ toString digit
+    Digit digit -> expression ++ String.fromInt digit
     Period -> expression ++ "."
     Delete -> removeLastCharacter expression
     Sign sign -> addOperator sign expression

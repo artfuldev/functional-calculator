@@ -1,7 +1,8 @@
 module Operation exposing (Operation, operate, parser)
 
-import Parser exposing (Parser, (|.), (|=), symbol, oneOf, map, inContext)
+import Parser exposing (Parser, (|.), (|=), symbol, oneOf, map)
 import ArithmeticSign exposing (ArithmeticSign(..), parser)
+import Flip exposing (flip)
 
 type Operation
   = Addition
@@ -29,12 +30,11 @@ parser: Parser Operation
 parser =
   ArithmeticSign.parser
     |> map toOperation
-    |> inContext "an operator"
 
 precision: Float -> Int
 precision float =
   float
-    |> toString
+    |> String.fromFloat
     |> String.split "."
     |> List.tail
     |> Maybe.withDefault []
@@ -43,9 +43,9 @@ precision float =
     |> String.length
 
 fixPrecision: Int -> Float -> Float
-fixPrecision precision value =
+fixPrecision p value =
   let
-    multiplier = 10 ^ precision |> toFloat
+    multiplier = 10 ^ p |> toFloat
     correct = flip (/) multiplier
   in
     value * multiplier
