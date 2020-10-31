@@ -5841,7 +5841,7 @@ var $elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var $author$project$Number$fromFloat = function (number) {
+var $author$project$Number$toNumber = function (value) {
 	return _Utils_Tuple2(
 		A2(
 			$elm$core$Maybe$withDefault,
@@ -5851,7 +5851,7 @@ var $author$project$Number$fromFloat = function (number) {
 					$elm$core$String$replace,
 					'.',
 					'',
-					$elm$core$String$fromFloat(number)))),
+					$elm$core$String$fromFloat(value)))),
 		-$elm$core$String$length(
 			A2(
 				$elm$core$Maybe$withDefault,
@@ -5864,12 +5864,12 @@ var $author$project$Number$fromFloat = function (number) {
 							A2(
 								$elm$core$String$split,
 								'.',
-								$elm$core$String$fromFloat(number))))))));
+								$elm$core$String$fromFloat(value))))))));
 };
 var $author$project$Number$applySign = F2(
 	function (s, v) {
 		var factor = (!s) ? 1 : (-1);
-		return $author$project$Number$fromFloat(factor * v);
+		return $author$project$Number$toNumber(factor * v);
 	});
 var $elm$parser$Parser$ExpectingFloat = {$: 5};
 var $elm$parser$Parser$Advanced$float = F2(
@@ -5990,9 +5990,12 @@ var $author$project$Number$add = F2(
 var $author$project$Number$divide = F2(
 	function (_v0, _v1) {
 		var xs = _v0.a;
+		var xe = _v0.b;
 		var ys = _v1.a;
+		var ye = _v1.b;
 		return $author$project$Number$normalize(
-			$author$project$Number$fromFloat(xs / ys));
+			$author$project$Number$toNumber(
+				(xs * A2($elm$core$Basics$pow, 10.0, xe)) / (ys * A2($elm$core$Basics$pow, 10.0, ye))));
 	});
 var $author$project$Number$multiply = F2(
 	function (_v0, _v1) {
