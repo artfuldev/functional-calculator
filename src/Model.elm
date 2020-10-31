@@ -5,6 +5,7 @@ import Evaluation exposing (Evaluation)
 import Key exposing (Key(..))
 import Msg exposing (Msg(..))
 import Parser exposing (run)
+import Number
 
 type alias Model =
   { expression: Expression
@@ -23,7 +24,7 @@ evaluate key model =
   case key of
     Evaluate ->
       case model.evaluation of
-        Just evaluation -> { model | expression = String.fromFloat evaluation , evaluation = Nothing }
+        Just evaluation -> { model | expression = Number.toString evaluation , evaluation = Nothing }
         Nothing -> model
     _ -> { model | evaluation = Evaluation.evaluate model.expression }
 
