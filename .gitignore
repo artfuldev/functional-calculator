@@ -59,10 +59,3 @@ typings/
 
 # elm stuff
 elm-stuff/
-
-# build artifacts
-dist/
-docs/
-app.js
-styles.css
-index.html
