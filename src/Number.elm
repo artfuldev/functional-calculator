@@ -13,7 +13,7 @@ type alias Number = (Significand, Exponent)
 
 normalize: Number -> Number
 normalize (s, e) =
-  if (s == 0 || e == 0 || Basics.remainderBy 10 s /= 0)
+  if (s == 0 || e == 0 || remainderBy 10 s /= 0)
   then (s, e)
   else normalize (s // 10, e - 1)
 
@@ -56,8 +56,10 @@ multiply (xs, xe) (ys, ye) =
   normalize (xs * ys, xe + ye)
 
 divide: Number -> Number -> Number
-divide (xs, _) (ys, _)  =
-  (Basics.toFloat xs) / (Basics.toFloat ys) |> fromFloat |> normalize
+divide (xs, xe) (ys, ye) =
+  ((toFloat xs) * (10.0 ^ (toFloat xe))) / ((Basics.toFloat ys) * (10.0 ^ (toFloat ye)))
+  |> toNumber
+  |> normalize
 
 parser : Parser Number
 parser =
@@ -77,13 +79,13 @@ sign =
     , succeed Positive
     ]
 
-fromFloat: Float -> Number
-fromFloat number =
-  ( number |> String.fromFloat |> String.replace "." "" |> String.toInt |> Maybe.withDefault 0
-  , -(number |> String.fromFloat |> String.split "." |> List.tail |> Maybe.withDefault [] |> List.head |> Maybe.withDefault "" |> String.length)
+toNumber: Float -> Number
+toNumber value =
+  ( value |> String.fromFloat |> String.replace "." "" |> String.toInt |> Maybe.withDefault 0
+  , -(value |> String.fromFloat |> String.split "." |> List.tail |> Maybe.withDefault [] |> List.head |> Maybe.withDefault "" |> String.length)
   )
 
 applySign : Sign -> Float -> Number
 applySign s v =
   let factor = if s == Positive then 1 else -1 in
-  factor * v |> fromFloat
+  factor * v |> toNumber
