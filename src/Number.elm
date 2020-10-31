@@ -7,92 +7,63 @@ import Svg.Attributes exposing (exponent)
 import Parser exposing (number)
 import String exposing (fromFloat)
 
-type alias Number =
-  { significand: Int
-  , exponent: Int
-  }
+type alias Significand = Int
+type alias Exponent = Int
+type alias Number = (Significand, Exponent)
 
 normalize: Number -> Number
-normalize number =
-  if (number.significand == 0 || number.exponent == 0 || Basics.remainderBy 10 number.significand /= 0)
-  then number
-  else
-    normalize
-      { significand = number.significand // 10
-      , exponent = number.exponent - 1
-      }
+normalize (s, e) =
+  if (s == 0 || e == 0 || Basics.remainderBy 10 s /= 0)
+  then (s, e)
+  else normalize (s // 10, e - 1)
 
 toString: Number -> String
-toString number =
-  if number.exponent == 0
-  then number.significand |> String.fromInt
+toString (s, e) =
+  if e == 0
+  then s |> String.fromInt
   else
-    let significand = number.significand |> String.fromInt |> String.padLeft -number.exponent '0' in
-    let characteristic = significand |> String.slice 0 number.exponent in
-    let mantissa = significand |> String.right -number.exponent in
+    let numeric_string = s |> String.fromInt |> String.padLeft -e '0' in
+    let characteristic = numeric_string |> String.slice 0 e in
+    let mantissa = numeric_string |> String.right -e in
     characteristic ++ "." ++ mantissa
 
 withExponent: Int -> Number -> Number
-withExponent exponent number  =
-  let final = min number.exponent exponent
+withExponent exp (s, e)  =
+  let final = min e exp
   in
-    if final >= number.exponent
-    then number
-    else
-      { significand = number.significand * (10 ^ -(final - number.exponent))
-      , exponent = final
-      }
+    if final >= e
+    then (s, e)
+    else (s * (10 ^ -(final - e)), final)
 
 add: Number -> Number -> Number
-add x y =
-  let exponent = min x.exponent y.exponent in
+add (xs, xe) (ys, ye) =
+  let exponent = min xe ye in
   let normalizedWithExponent = exponent |> withExponent in
-  let a = normalizedWithExponent x in
-  let b = normalizedWithExponent y in
-    normalize
-      { significand = a.significand + b.significand
-      , exponent = exponent
-      }
+  let (a, _) = normalizedWithExponent (xs, xe) in
+  let (b, _) = normalizedWithExponent (ys, ye) in
+  normalize (a + b, exponent)
 
 subtract: Number -> Number -> Number
-subtract x y =
-  let exponent = min x.exponent y.exponent in
+subtract (xs, xe) (ys, ye) =
+  let exponent = min xe ye in
   let normalizedWithExponent = exponent |> withExponent in
-  let a = normalizedWithExponent x in
-  let b = normalizedWithExponent y in
-    normalize
-      { significand = a.significand - b.significand
-      , exponent = exponent
-      }
+  let (a, _) = normalizedWithExponent (xs, xe) in
+  let (b, _) = normalizedWithExponent (ys, ye) in
+  normalize (a - b, exponent)
 
 multiply: Number -> Number -> Number
-multiply x y =
-  normalize
-    { significand = x.significand * y.significand
-    , exponent = x.exponent + y.exponent
-    }
+multiply (xs, xe) (ys, ye) =
+  normalize (xs * ys, xe + ye)
 
 divide: Number -> Number -> Number
-divide x y =
-  let result = (Basics.toFloat x.significand) / (Basics.toFloat y.significand) |> fromFloat in
-  normalize result
+divide (xs, _) (ys, _)  =
+  (Basics.toFloat xs) / (Basics.toFloat ys) |> fromFloat |> normalize
 
 parser : Parser Number
 parser =
   succeed applySign
-    |= maybeNegative
-    |= parseNumber
-
-maybeNegative : Parser Sign
-maybeNegative =
-  oneOf
-    [ symbol "-" |> map (always Negative)
-    , succeed Positive
-    ]
-
-parseNumber : Parser Float
-parseNumber =
-    float
+    |= sign
+    |= float
 
 type Sign
   = Positive
@@ -108,12 +79,11 @@ sign =
 
 fromFloat: Float -> Number
 fromFloat number =
-  { significand = number |> String.fromFloat |> String.replace "." "" |> String.toInt |> Maybe.withDefault 0
-  , exponent = -(number |> String.fromFloat |> String.split "." |> List.tail |> Maybe.withDefault [] |> List.head |> Maybe.withDefault "" |> String.length)
-  }
+  ( number |> String.fromFloat |> String.replace "." "" |> String.toInt |> Maybe.withDefault 0
+  , -(number |> String.fromFloat |> String.split "." |> List.tail |> Maybe.withDefault [] |> List.head |> Maybe.withDefault "" |> String.length)
+  )
 
 applySign : Sign -> Float -> Number
-applySign s number =
-  case s of
-    Positive -> fromFloat number      
-    Negative -> fromFloat -number
+applySign s v =
+  let factor = if s == Positive then 1 else -1 in
+  factor * v |> fromFloat
