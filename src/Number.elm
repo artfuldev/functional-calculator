@@ -1,9 +1,8 @@
 module Number exposing (Number, add, divide, multiply, parser, subtract, toString)
 
-import Basics exposing (Bool, Int)
-import Flip exposing (flip)
-import Parser exposing ((|.), (|=), Parser, andThen, float, map, number, oneOf, succeed, symbol)
-import String exposing (fromFloat)
+import Basics exposing (Int)
+import Parser exposing ((|.), (|=), Parser, float, map, oneOf, succeed, symbol)
+import String
 import Svg.Attributes exposing (exponent)
 
 

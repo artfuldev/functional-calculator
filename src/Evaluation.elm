@@ -2,7 +2,7 @@ module Evaluation exposing (Evaluation, evaluate, toString)
 
 import Calculation exposing (perform)
 import Expression exposing (Expression)
-import Number exposing (Number, toString)
+import Number exposing (Number)
 import Parser exposing (run)
 
 

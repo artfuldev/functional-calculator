@@ -1,7 +1,7 @@
 module Key exposing (Key(..), parser, toString)
 
 import ArithmeticSign exposing (ArithmeticSign)
-import Parser exposing ((|.), (|=), Parser, int, keyword, map, oneOf, succeed, symbol)
+import Parser exposing ((|.), (|=), Parser, int, keyword, map, oneOf, symbol)
 
 
 type Key

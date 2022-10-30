@@ -1,7 +1,7 @@
 module Events exposing (onKeyDown)
 
 import Html exposing (Attribute)
-import Html.Events exposing (custom, keyCode)
+import Html.Events exposing (custom)
 import Json.Decode as Json exposing (field, map, string)
 
 

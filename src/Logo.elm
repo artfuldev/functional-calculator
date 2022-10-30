@@ -1,9 +1,12 @@
 module Logo exposing (logo)
 
+import Html exposing (Html)
+import Msg exposing (Msg)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
+logo : Html Msg
 logo =
     svg
         [ version "1.1", x "0", y "0", viewBox "0 0 323.141 322.95" ]
