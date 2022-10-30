@@ -5,19 +5,17 @@ import Number exposing (Number)
 import Parser exposing (Parser, (|.), (|=), succeed, float, end, run)
 
 type alias Calculation =
-  { left: Number
+  { start: Number
   , operation: Operation
-  , right:  Number
   }
 
 perform: Calculation -> Number
-perform { left, operation, right } =
-  operate operation left right 
+perform { start, operation } =
+  operate operation start
 
 parser: Parser Calculation
 parser =
   succeed Calculation
     |= Number.parser
     |= Operation.parser
-    |= Number.parser
     |. end
