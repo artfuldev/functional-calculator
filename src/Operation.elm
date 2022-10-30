@@ -1,8 +1,8 @@
 module Operation exposing (Operation, operate, parser)
 
-import Parser exposing (Parser, (|.), (|=), end, succeed)
-import ArithmeticSign exposing (ArithmeticSign(..), parser)
-import Number exposing (Number, add, multiply, subtract, divide, parser)
+import Parser exposing (Parser, (|.), (|=), succeed)
+import ArithmeticSign exposing (ArithmeticSign(..))
+import Number exposing (Number, add, multiply, subtract, divide)
 
 type alias Operation =
   { sign: ArithmeticSign
@@ -22,5 +22,3 @@ parser =
   succeed Operation
   |= ArithmeticSign.parser
   |= Number.parser
-  |. end
-  

@@ -1,21 +1,36 @@
 module Calculation exposing (parser, perform)
 
-import Operation exposing (Operation, operate)
 import Number exposing (Number)
-import Parser exposing (Parser, (|.), (|=), succeed, float, end, run)
+import Operation exposing (Operation, operate)
+import Parser exposing ((|.), (|=), Parser, Step(..), Trailing(..), end, sequence, spaces, succeed)
+
 
 type alias Calculation =
-  { start: Number
-  , operation: Operation
-  }
+    { start : Number
+    , operations : List Operation
+    }
 
-perform: Calculation -> Number
-perform { start, operation } =
-  operate operation start
 
-parser: Parser Calculation
+perform : Calculation -> Number
+perform { start, operations } =
+    List.foldl operate start operations
+
+
+operations_parser : Parser (List Operation)
+operations_parser =
+    sequence
+        { start = ""
+        , separator = ""
+        , end = ""
+        , spaces = spaces
+        , item = Operation.parser
+        , trailing = Forbidden
+        }
+
+
+parser : Parser Calculation
 parser =
-  succeed Calculation
-    |= Number.parser
-    |= Operation.parser
-    |. end
+    succeed Calculation
+        |= Number.parser
+        |= operations_parser
+        |. end
