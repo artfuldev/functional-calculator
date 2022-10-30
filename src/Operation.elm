@@ -1,33 +1,24 @@
 module Operation exposing (Operation, operate, parser)
 
-import Parser exposing (Parser, (|.), (|=), symbol, oneOf, map)
-import ArithmeticSign exposing (ArithmeticSign(..), parser)
-import Flip exposing (flip)
+import Parser exposing (Parser, (|.), (|=), succeed)
+import ArithmeticSign exposing (ArithmeticSign(..))
 import Number exposing (Number, add, multiply, subtract, divide)
 
-type Operation
-  = Addition
-  | Subtraction
-  | Multiplication
-  | Division
+type alias Operation =
+  { sign: ArithmeticSign
+  , value: Number
+  }
 
-operate: Operation -> Number -> Number -> Number
-operate operation x y =
-  case operation of
-    Addition -> add x y
-    Subtraction -> subtract x y
-    Multiplication -> multiply x y
-    Division -> divide x y
-
-toOperation : ArithmeticSign -> Operation
-toOperation sign =
+operate: Operation -> Number -> Number
+operate { sign, value } x =
   case sign of
-    Plus -> Addition
-    Minus -> Subtraction
-    Times -> Multiplication
-    Obelus -> Division
+    Plus -> add x value
+    Minus -> subtract x value
+    Times -> multiply x value
+    Obelus -> divide x value
 
 parser: Parser Operation
 parser =
-  ArithmeticSign.parser
-    |> map toOperation
+  succeed Operation
+  |= ArithmeticSign.parser
+  |= Number.parser
